@@ -39,7 +39,12 @@
   ]'>
       </invoice-form-component>
     </div> -->
-    <invoice-form-component ></invoice-form-component>
+    <invoice-form-component data-fields='[
+  {"type": "text", "label": "Invoice Number", "name": "invoiceNumber", "placeholder": "Enter invoice number"},
+  {"type": "text", "label": "Customer Name", "name": "customerName", "placeholder": "Enter customer name"},
+  {"type": "email", "label": "Customer Email", "name": "customerEmail", "placeholder": "Enter customer email"},
+  {"type": "number", "label": "Amount", "name": "amount", "placeholder": "Enter amount"}
+]'></invoice-form-component>
   </div>
   
   

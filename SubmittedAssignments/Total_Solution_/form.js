@@ -147,10 +147,10 @@ class InvoiceFormComponent extends HTMLElement {
           { name: 'free', label: 'Free', type: 'number',defaultValue:0  },
           { name: 'mrp', label: 'Rate', type: 'number' ,defaultValue:0 },
           { name: 'grossAmt', label: 'Gross Amt', type: 'number',defaultValue:0  },
-          { name: 'Disc1', label: 'Disc1', type: 'number%',defaultValue:0  },
-          { name: 'Disc2', label: 'Disc2', type: 'number%',defaultValue:0  },
-          { name: 'Disc3', label: 'Disc3', type: 'number%' ,defaultValue:0 },
-          { name: 'Disc4', label: 'Disc4', type: 'number%' ,defaultValue:0 },
+          { name: 'Disc1', label: 'Disc1', type: 'number',defaultValue:0  },
+          { name: 'Disc2', label: 'Disc2', type: 'number',defaultValue:0  },
+          { name: 'Disc3', label: 'Disc3', type: 'number' ,defaultValue:0 },
+          { name: 'Disc4', label: 'Disc4', type: 'number' ,defaultValue:0 },
           { name: 'taxable', label: 'Taxable', type: 'number' ,defaultValue:0 },
           { name: 'gst', label: 'GST', type: 'number' ,defaultValue:0 },
           { name: 'cgst', label: 'CGST', type: 'number' ,defaultValue:0 },
@@ -374,12 +374,7 @@ class InvoiceFormComponent extends HTMLElement {
         this.createAutocompleteFieldInTable(cell, 'particulars', rowIndex, col, newRow, field, tbody);
       } else {
         const input = document.createElement('input');
-        if(col.type='number%'){
-          input.setAttribute('oninput', "this.value = this.value.replace(/[^0-9%]/g, '');");
-          input.setAttribute('type', 'text');
-        }else{
-          input.type = col.type;
-        }
+        input.type = col.type;
         input.name = `particulars[${rowIndex}][${col.name}]`;
         if(col.type==='select'){
           input.options=col.options
@@ -416,13 +411,12 @@ class InvoiceFormComponent extends HTMLElement {
         input.addEventListener('input', (e) => {
           newRow[col.name] = e.target.value;
         });
-        if (['quantity', 'mrp', 'Disc1', 'Disc2', 'Disc3', 'Disc4', 'gst'].includes(col.name)) {
-          const updateValue = (e) => {
-              newRow[col.name] = e.target.value;
-              this.updateGrossAmt(rowIndex, field.columns, tbody);
-          };
-          input.addEventListener('blur', updateValue);
-        }else {
+        if (col.name === 'quantity' || col.name === 'mrp') {
+          input.addEventListener('input', (e) => {
+            newRow[col.name] = parseFloat(e.target.value) || 0;
+            this.updateGrossAmt(rowIndex, field.columns, tbody);
+          });
+        } else {
           input.addEventListener('input', (e) => {
             newRow[col.name] = e.target.value;
           });
@@ -431,14 +425,81 @@ class InvoiceFormComponent extends HTMLElement {
       }
       rowElement.appendChild(cell);
     });
+  
+    // Append the row to the table body
     tbody.appendChild(rowElement);
+  }
+  
+
+
+  renderTableRows(field, tbody) {
+    tbody.innerHTML = ''; 
+    
+    this.particulars.forEach((row, rowIndex) => {
+      const tr = document.createElement('tr');
+      field.columns.forEach((col) => {
+        const td = document.createElement('td');
+        if (col.type === 'autocomplete') {
+          this.createAutocompleteFieldInTable(td, field.name, rowIndex, col, row,field,tbody);
+        } else {
+          const input = document.createElement('input');
+          input.setAttribute('type', col.type === 'autoIncrease' ? 'text' : col.type);
+          input.setAttribute('name', `${field.name}[${rowIndex}][${col.name}]`);
+          input.value = col.type === 'autoIncrease' ? rowIndex + 1 : row[col.name] || '';
+          input.classList.add('form-control');
+          if (col.type === 'autoIncrease') {
+            input.setAttribute('disabled', true);
+          }
+          if (col.required) {
+            input.setAttribute('required', true);
+          }
+          if (col.disabled) {
+            input.setAttribute('disabled', true);
+          } 
+          if (col.defaultValue || col.defaultValue===0) {
+            input.value = col.defaultValue 
+          }
+          if (col.placeholder) {
+            input.setAttribute('placeholder', field.placeholder);
+          }
+          if (col.maxlength) {
+            input.setAttribute('maxlength', field.maxlength);
+          }
+          if (col.minlength) {
+            input.setAttribute('minlength', field.minlength);
+          }
+          if (col.pattern) {
+            input.setAttribute('pattern', field.pattern);
+          }
+          if (col.size) {
+            input.setAttribute('size', field.size);
+          }
+          input.addEventListener('input', (e) => {
+            row[col.name] = e.target.value;
+          });
+          if (col.name === 'quantity' || col.name === 'mrp') {
+            input.addEventListener('input', (e) => {
+              row[col.name] = parseFloat(e.target.value) || 0;
+              this.updateGrossAmt(rowIndex, field.columns, tbody);
+            });
+          } else {
+            input.addEventListener('input', (e) => {
+              row[col.name] = e.target.value;
+            });
+          }
+          td.appendChild(input);
+        }
+        tr.appendChild(td);
+      });
+      tbody.appendChild(tr);
+    });
   }
   updateTotals() {
     const subTotal = this.particulars.reduce((sum, row) => sum + (parseFloat(row['grossAmt']) || 0), 0);
     const discount = this.particulars.reduce((sum, row) => sum + (parseFloat(row['discount']) || 0), 0);
-    const couponDiscount = 0; 
+    const couponDiscount = 0; // Assuming no coupon discount for now
     const discountedSubTotal = subTotal - discount - couponDiscount;
-    const taxTotal = this.particulars.reduce((sum, row) => sum + (parseFloat(row['gstAmt']) || 0), 0);
+    const taxTotal = this.particulars.reduce((sum, row) => sum + (parseFloat(row['gst']) || 0), 0);
     const mrpTotal = this.particulars.reduce((sum, row) => sum + (parseFloat(row['mrp']) || 0), 0);
     const previousDue = 0; 
     const amount = discountedSubTotal + taxTotal;
@@ -457,79 +518,14 @@ class InvoiceFormComponent extends HTMLElement {
   updateGrossAmt(rowIndex, columns, tbody) {
     console.log('updateGrossAmt called')
     const row = this.particulars[rowIndex];
-    console.log('row[quantity]',row['quantity'])
-    const quantity = parseFloat(row['quantity']) || 1;
+
+    const quantity = parseFloat(row['quantity']) || 0;
     const mrp = parseFloat(row['mrp']) || 0;
-    row['grossAmt'] = quantity * mrp;
-    console.log('row[Disc2]',row['Disc2'])
-    const Disc1 = this.calculateDiscount(row['Disc1'],row['grossAmt']) || 0;
-    const Disc2 = this.calculateDiscount(row['Disc2'],row['grossAmt']-Disc1) || 0;
-    const Disc3 = this.calculateDiscount(row['Disc3'],row['grossAmt']-Disc1-Disc2)|| 0;
-    const Disc4 = this.calculateDiscount(row['Disc4'],row['grossAmt']-Disc1-Disc2-Disc3)|| 0;
     const gst = parseFloat(row['gst']) || 0;
-    console.log('Disc1',Disc1,Disc2,Disc3,Disc4)
-    row['taxable'] = (quantity * mrp)-Disc1-Disc2-Disc3-Disc4;
-    row['cgst'] = row['taxable']*((gst/2)/100);
-    row['sgst'] = row['taxable']*((gst/2)/100);
-    row['gstAmt'] = row['sgst'] +row['cgst'] ;
-    
+    const discount = parseFloat(row['discount']) || 0;
+    row['grossAmt'] = quantity * mrp;
     this.updateTotal(rowIndex);
-    const taxableColIndex = columns.findIndex((col) => col.name === 'taxable');
-    if(taxableColIndex !==-1){
-      const tr = tbody.children[rowIndex];
-      const td = tr.children[taxableColIndex];
-      td.innerHTML = '';
 
-      const input = document.createElement('input');
-      input.setAttribute('type', 'number');
-      input.setAttribute('name', `particulars[${rowIndex}][taxable]`);
-      input.value = row['taxable'].toFixed(2);
-      input.classList.add('form-control');
-      input.setAttribute('disabled', true); 
-      td.appendChild(input);
-    }
-    const cgstColIndex = columns.findIndex((col) => col.name === 'cgst');
-    if(cgstColIndex !==-1){
-      const tr = tbody.children[rowIndex];
-      const td = tr.children[cgstColIndex];
-      td.innerHTML = '';
-
-      const input = document.createElement('input');
-      input.setAttribute('type', 'number');
-      input.setAttribute('name', `particulars[${rowIndex}][cgst]`);
-      input.value = row['cgst'].toFixed(2);
-      input.classList.add('form-control');
-      input.setAttribute('disabled', true); 
-      td.appendChild(input);
-    }
-    const gstAmtColIndex = columns.findIndex((col) => col.name === 'gstAmt');
-    if(gstAmtColIndex !==-1){
-      const tr = tbody.children[rowIndex];
-      const td = tr.children[gstAmtColIndex];
-      td.innerHTML = '';
-
-      const input = document.createElement('input');
-      input.setAttribute('type', 'number');
-      input.setAttribute('name', `particulars[${rowIndex}][gstAmt]`);
-      input.value = row['gstAmt'].toFixed(2);
-      input.classList.add('form-control');
-      input.setAttribute('disabled', true); 
-      td.appendChild(input);
-    }
-    const sgstColIndex = columns.findIndex((col) => col.name === 'sgst');
-    if(sgstColIndex !==-1){
-      const tr = tbody.children[rowIndex];
-      const td = tr.children[sgstColIndex];
-      td.innerHTML = '';
-
-      const input = document.createElement('input');
-      input.setAttribute('type', 'number');
-      input.setAttribute('name', `particulars[${rowIndex}][sgst]`);
-      input.value = row['sgst'].toFixed(2);
-      input.classList.add('form-control');
-      input.setAttribute('disabled', true); 
-      td.appendChild(input);
-    }
     const grossAmtColIndex = columns.findIndex((col) => col.name === 'grossAmt');
     if (grossAmtColIndex !== -1) {
       const tr = tbody.children[rowIndex];
@@ -548,20 +544,6 @@ class InvoiceFormComponent extends HTMLElement {
     // Update the additional fields
     this.updateTotals();
   }
-  calculateDiscount(disc,grossAmt) {
-    console.log('calculateDiscount',disc)
-    let discount;
-    if (disc.includes('%')) {
-      console.log('percentage',disc,percentage)
-        let percentage = parseFloat(disc) / 100;
-        discount = grossAmt * percentage;
-    } else {
-      console.log('discdiscdisc',disc)
-      discount = parseFloat(disc);
-    }
-    console.log('discount',discount)
-    return discount;
-  }
   updateRowField(rowIndex, fieldName, value, field, tbody) {
     const columnIndex = field.columns.findIndex((col) => col.map === fieldName || col.name === fieldName);
     if (columnIndex !== -1) {
@@ -575,11 +557,12 @@ class InvoiceFormComponent extends HTMLElement {
   }
   updateTotal(rowIndex) {
     const row = this.particulars[rowIndex];
-
+    console.log(row)
     const quantity = row.quantity || 0;
     const mrp = row.mrp || 0.0;
     row.total = quantity * mrp;
-    row.taxable=(quantity * mrp)-row.Disc1-row.Disc2-row.Disc3-row.Disc4
+    
+    console.log("Updated Total for Row", rowIndex, ":", row.total);
     const grandTotal = this.particulars.reduce((sum, row) => {
       const total = row.total || 0;
       return sum + total;
@@ -963,5 +946,3 @@ class InvoiceFormComponent extends HTMLElement {
 }
 
 customElements.define('invoice-form-component', InvoiceFormComponent);
-if (!window.customElementsList) window.customElementsList = [];
-window.customElementsList.push({ component: 'invoice-form-component', componentClass: InvoiceFormComponent });
