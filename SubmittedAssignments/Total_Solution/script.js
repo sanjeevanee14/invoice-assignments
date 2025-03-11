@@ -150,7 +150,6 @@ class InvoiceFormComponent extends HTMLElement {
           { name: 'Disc1', label: 'Disc1', type: 'number%',defaultValue:0  },
           { name: 'Disc2', label: 'Disc2', type: 'number%',defaultValue:0  },
           { name: 'Disc3', label: 'Disc3', type: 'number%' ,defaultValue:0 },
-          { name: 'Disc4', label: 'Disc4', type: 'number%' ,defaultValue:0 },
           { name: 'taxable', label: 'Taxable', type: 'number' ,defaultValue:0 },
           { name: 'gst', label: 'GST', type: 'number' ,defaultValue:0 },
           { name: 'cgst', label: 'CGST', type: 'number' ,defaultValue:0 },
@@ -465,7 +464,8 @@ class InvoiceFormComponent extends HTMLElement {
     const Disc1 = this.calculateDiscount(row['Disc1'],row['grossAmt']) || 0;
     const Disc2 = this.calculateDiscount(row['Disc2'],row['grossAmt']-Disc1) || 0;
     const Disc3 = this.calculateDiscount(row['Disc3'],row['grossAmt']-Disc1-Disc2)|| 0;
-    const Disc4 = this.calculateDiscount(row['Disc4'],row['grossAmt']-Disc1-Disc2-Disc3)|| 0;
+    //const Disc4 = this.calculateDiscount(row['Disc4'],row['grossAmt']-Disc1-Disc2-Disc3)|| 0;
+    const Disc4=0
     const gst = parseFloat(row['gst']) || 0;
     console.log('Disc1',Disc1,Disc2,Disc3,Disc4)
     row['taxable'] = (quantity * mrp)-Disc1-Disc2-Disc3-Disc4;
