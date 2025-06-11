@@ -38,10 +38,10 @@ On submitting the form, the invoice view should update with the user input, demo
 
 ## 🔗 Deployment Format
 
-`https://services.apnasite.in/invoice-assignments/[YourName_AssignmentNumber]/preview.html`
+`https://services.apnasite.in/invoice-assignments/[YourName_AssignmentNumber]/index.html`
 
 **Example:**  
-[https://services.apnasite.in/invoice-assignments/Mahesh_Bhosle_21/preview.html](https://services.apnasite.in/invoice-assignments/Mahesh_Bhosle_21/preview.html)
+[https://services.apnasite.in/invoice-assignments/Vilas_Shetkar/index.html](https://services.apnasite.in/invoice-assignments/Vilas_Shetkar/index.html)
 
 ---
 
@@ -51,7 +51,7 @@ On submitting the form, the invoice view should update with the user input, demo
 invoice-assignments/
  ┣ 📂 SubmittedAssignments/
  ┃ ┗ 📂 [Your_Name_XX]/
- ┃    ┣ 📜 preview.html           // Demo with both components
+ ┃    ┣ 📜 index.html           // Demo with both components
  ┃    ┣ 📜 script.js              // JS for <invoice-component> & <invoice-form-component>
  ┃    ┣ 📜 data.json              // Sample JSON for 'data' and 'config'
  ┃    ┣ 📂 IMG/                   // Images and assets (e.g., logos, QR)
@@ -398,7 +398,7 @@ mkdir SubmittedAssignments/Your_Name_01
 
 ### 4. 🛠️ Copy and Build
 
-Copy the sample folder structure and implement your solution inside `script.js`, `preview.html`, and `form.json`.
+Copy the sample folder structure and implement your solution inside `script.js`, `index.html`, and `form.json`.
 
 ### 5. ✅ Commit and Push
 
