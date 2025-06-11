@@ -104,79 +104,229 @@ A form for entering invoice details. On submit, it dispatches a custom event wit
 
 ```json
 {
-    "companyName": "TATA Technologies",
-    "gstNo": "27AAKCS1234H1Z5",
-    "title": "Tax Invoice",
-    "invoiceNumber": "INV-123456",
-    "invoiceDate": "2023-10-01",
-    "dueDate": "2023-10-15",
-    "poNumber": "PO-456789",
-    "logo": "./IMG/tata.png",
-    "qr": "./IMG/qr.png",
-    "companyAddress": [
-        "City: Pune",
-        "State: MAHARASHTRA",
-        "Country: India",
-        "Pincode: 411018",
-        "Mobile: 9999999999",
-        "Email: Swipe@getswipe.in",
-        "Website: www.getswipe.in"
-    ],
-    "customer": {
-        "billing": {
-            "name": "Natarajan Chandrasekaran",
-            "address": [
-                "City: Nanakramguda",
-                "State: TELANGANA",
-                "Country: INDIA",
-                "Pincode: 500032",
-                "Email: natrajan@gmail.com",
-                "Ph: 9999999999"
-            ]
-        },
-        "shipping": {
-            "name": "Natarajan Chandrasekaran",
-            "address": [
-                "Survey 115/1, ISB Rd, Financial District",
-                "Gachibowli, Nanakramguda",
-                "City: Nanakramguda",
-                "State: TELANGANA",
-                "Country: INDIA",
-                "Pincode: 500032",
-                "Email: natrajan@gmail.com",
-                "Ph: 9999999999"
-            ]
-        }
+  
+  "uid": "IN00000618",
+  "category": "Sale",
+  "type": "Sale",
+  "remark": "Invoice against Order #OR00000709",
+  "config": {
+    "storageLocationId": "64097cc4462d5422fccd8e84"
+  },
+  "subTotal": 100,
+  "discount": 64,
+  "couponDiscount": 0,
+  "discountedSubTotal": 100,
+  "taxTotal": 0,
+  "mrpTotal": 164,
+  "previousDue": 0,
+  "amount": 100,
+  "roundOff": 0,
+  "subTotalAmount": 100,
+  "shippingCharges": 30,
+  "shippingDiscount": 30,
+  "paymentStatus": "Unpaid",
+  "deliveryStatus": "ReturnProcessing",
+  "invoiceDate": "2023-06-23T00:00:00.000Z",
+  "dueDate": "2023-06-13T11:33:24.335Z",
+  "created": "2023-06-23T12:07:09.564Z",
+  "modified": "2023-06-23T12:52:07.296Z",
+  
+  "Party": {
+    "uid": "LDU7WXCR",
+    "puid": "User",
+    "name": "Ashvini Shetkar",
+    "firstName": "Ashvini",
+    "lastName": "Shetkar",
+    "mobile": "+917517978898",
+    "email": "vilasshetkar@gmail.com",
+    "address": {
+      "line1": "Shop No. 8, Hari Om Plaza, Pune",
+      "line2": "Kalewadi-Pimpri Main Road, Nadhe Nagar, Kalewadi",
+      "line3": "Opp. Joytiba Temple",
+      "location": "Kalewadi ",
+      "area": "Pune City",
+      "city": "Pune",
+      "state": "MAHARASHTRA",
+      "country": "India",
+      "pincode": "411017",
+      "zoom": 14,
+      "accuracy": 17.778,
+      "latLng": {
+        "lat": 18.61799689999999,
+        "lng": 73.7917382
+      }
     },
-    "items": [
-        {
-            "item": "Tata Nexon",
-            "hsn": "87038070",
-            "rate": "8,05,000.00",
-            "qty": 1,
-            "taxAmount": "1,44,900.00 (18%)",
-            "amount": "9,49,900.00"
-        },
-        {
-            "item": "Car accessories Kit",
-            "hsn": "87089900",
-            "rate": "2,117.80",
-            "qty": 1,
-            "taxAmount": "381.20 (18%)",
-            "amount": "2,499.00"
-        }
-    ],
     "bankDetails": {
-        "bank": "YES BANK",
-        "account": "66789999922445",
-        "ifsc": "YESB0BNA567",
-        "branch": "Kodihalli"
+      "accountNumber": "123456",
+      "ifscCode": ""
     },
-    "terms": [
-        "Terms: Goods once sold cannot be taken back or exchanged."
-    ],
-    "totalAmountInWords": "INR Nine Lakh, Fifty-Two Thousand, Three Hundred And Ninety-Nine Rupees Only."
+    "dob": "1990-02-02T00:00:00.000Z",
+    "gender": "male",
+    "joiningDate": "2023-03-14T00:00:00.000Z",
+    "maritalStatus": "Married",
+    "middleName": "ABCD",
+    "pan": "DDDFG8765F",
+    "userId": "63e243e0b8c48b22c885b4b9",
+    "profilePicture": "https://d2qp0siotla746.cloudfront.net/img/use-cases/profile-picture/template_0.jpg",
+    "InvoiceSalesSummary": {
+      "mrpTotal": 2845514,
+      "roundOff": 0.01999999999999999,
+      "discountedSubTotal": 1702586.98,
+      "invoices": 81,
+      "subTotal": 1634226.98,
+      "discount": 1142927.02,
+      "taxTotal": 0,
+      "previousDue": 0,
+      "amount": 1702747,
+      "subTotalAmount": 1702586.98
+    },
+    "TransactionSummary": {
+      "totalCreditAmount": 1781333,
+      "totalDebitAmount": 10720,
+      "transactions": 115,
+      "totalCredit": 115,
+      "totalDebit": 115
+    },
+    "ReferralSummary": {
+      "totalCount": 17,
+      "transactions": 5,
+      "totalCreditAmount": 173984,
+      "totalDebitAmount": 0,
+      "noTransactions": 12
+    }
+  },
+  "particulars": [
+    {
+      "_id": "6495957729bd8844641bf4bf",
+      "category": "Sale",
+      "type": "Sale",
+      "quantity": -1,
+      "sgst": 0,
+      "cgst": 0,
+      "inBoxQuantity": -12,
+      "boxQuantity": -1,
+      "mrp": 164,
+      "purchaseRate": 116.19,
+      "saleRate": 100,
+      "retailRate": 126.19,
+      "subTotal": 100,
+      "discount": 64,
+      "discountedSubTotal": 100,
+      "taxTotal": 0,
+      "amount": 100,
+      "mrpTotal": 164,
+      "stockDate": "2023-06-23T00:00:00.000Z",
+      "config": {},
+      "Product": {
+        "uid": "PR5045",
+        "name": "Gemini Sunflower Oil",
+        "shortName": "Gemini Sunflower Oil",
+        "type": "Product",
+        "tax": 0,
+        "isTaxIncluded": true,
+        "image": "/api/download/63e243e0b8c48b22c885b4b9/Cooking Oil/Gemini Sunflower Oil_1_liter.jpg",
+        "description": "<p>Gemini Sunflower Oil</p>",
+        "unit": "PCS",
+        "boxQuantity": 1,
+        "purchaseRate": 116.19,
+        "retailRate": 126.19,
+        "mrp": 164,
+        "retailMarginType": "Amount",
+        "retailMargin": 10,
+        "crate": false,
+        "showInStore": true,
+        "isStockRequired": true,
+        "category": "Grocery",
+        "additionalCategories": [],
+        "subCategory": "CookingOil",
+        "addToStock": false,
+        "startDate": "2023-05-19T00:00:00.000Z",
+        "expiryDate": "2023-05-19T00:00:00.000Z",
+        "created": "2023-05-19T08:28:46.455Z",
+        "modified": "2023-05-29T06:51:36.385Z",
+        "additionalFields": {},
+        "variantOptions": [],
+        "wholesaleMarginType": "Percentage",
+        "inBoxName": "Box",
+        "inBoxQuantity": 12,
+        "AvailableStock": {
+          "purchaseQuantity": 12,
+          "soldQuantity": -6,
+          "totalPrchaseAmount": 697.14,
+          "stockIn": 0,
+          "totalSaleAmount": 0,
+          "totalMrpAmount": 0,
+          "stockOut": 0,
+          "quantity": 6
+        },
+        "Discount": [],
+        "Variants": [],
+        "retailDiscount": 37.81,
+        "retailDiscountPercentage": 23.05,
+        "wholesaleDiscount": null,
+        "wholesaleDiscountPercentage": null
+      },
+      "StorageLocation": {
+        "category": "Godown",
+        "name": "kalewadi",
+        "address": "fwehfwe",
+        "building": "hari om plaza",
+        "wing": "A",
+        "floor": "5",
+        "chamber": "first",
+        "rack": "first",
+        "location": "kalewadi",
+        "width": 100,
+        "length": 100,
+        "height": 50
+      }
+    }
+  ],
+  "Company": {
+    "name": "Apnasite",
+    "bankDetails": {
+      "accountNumber": "1234567890",
+      "bankName": "HDFC",
+      "branch": "Pune",
+      "accountHolderName": "Apnasite",
+      "ifscCode": "HDFC0000234",
+      "vpa": "apnasite@ybl"
+    },
+    "contactDetails": {
+      "email": "kaapnasiteuser@gmail.com",
+      "mobile": "+917517978898",
+      "whatsappNumber": "+919049508514",
+      "phone": "",
+      "website": "http://apnasite.in",
+      "tollFreeNo": "",
+      "socialLinks": [
+        {
+          "name": "Facebook",
+          "label": "Facebook",
+          "url": "https://facebook.com/apnasite",
+          "className": "btn btn-link",
+          "icon": "bi bi-facebook",
+          "type": "Link"
+        }
+      ]
+    },
+    "gst": "",
+    "logo": "/api/download/localhost/default/apnasite-logo-light.png",
+    "address": {
+      "line1": "Hariom plaza",
+      "line2": "Kalewadi",
+      "location": "Pune H.O",
+      "area": "Pune City",
+      "city": "Pune",
+      "state": "MAHARASHTRA",
+      "country": "india",
+      "pincode": "411001"
+    },
+    "darkLogo": "/api/download/localhost/default/apnasite-logo-light.png"
+  },
+  "balance": null
 }
+
 ```
 
 ---

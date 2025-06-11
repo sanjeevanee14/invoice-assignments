@@ -1,8 +1,40 @@
 class InvoiceComponent extends HTMLElement {
   constructor() {
     super();
-    this.attachShadow({ mode: "open" });
-    this.config = {
+    this.config = this.defaultConfig();
+    this.data = this.defaultData();
+    this.render();
+  }
+
+  static get observedAttributes() {
+    return ["config", "data"];
+  }
+
+  connectedCallback() {
+    this.addEventListener("submit", (event) => {
+      Object.assign(this.data, event.detail);
+      this.render();
+    });
+  }
+
+  attributeChangedCallback(name, oldValue, newValue) {
+    if (oldValue !== newValue) {
+      try {
+        if (name === "config" && newValue) {
+          Object.assign(this.config, JSON.parse(newValue));
+        }
+        if (name === "data" && newValue) {
+          Object.assign(this.data, JSON.parse(newValue));
+        }
+      } catch (e) {
+        console.error(`Invalid ${name} JSON:`, e);
+      }
+      this.render();
+    }
+  }
+
+  defaultConfig() {
+    return {
       backgroundDiv: "invoice-wrapper",
       backgroundClass: "invoice-background",
       buttonClass: "btn btn-primary",
@@ -29,463 +61,632 @@ class InvoiceComponent extends HTMLElement {
       termsClass: "terms primary",
       footerClass: "invoice-footer",
     };
+  }
 
-    this.data = {
-      companyName: "TATA Technologies",
-      gstNo: "27AAKCS1234H1Z5",
-      title: "Tax Invoice",
-      invoiceNumber: "INV-123456",
-      invoiceDate: "2023-10-01",
-      dueDate: "2023-10-15",
-      poNumber: "PO-456789",
-      logo: "http://127.0.0.1:8081/img/tata.png",
-      qr: "http://127.0.0.1:8081/img/qr.png",
-      companyAddress: [
+  defaultData() {
+    // You can move your large data object here for brevity
+    return {
 
-        "City: Pune",
-        "State: MAHARASHTRA",
-        "Country: India",
-        "Pincode: 411018",
-        "Mobile: 9999999999",
-        "Email: Swipe@getswipe.in",
-        "Website: www.getswipe.in",
-      ],
-      customer: {
-        billing: {
-          name: "Natarajan Chandrasekaran",
-          address: [
-            // "Survey 115/1, ISB Rd, Financial District",
-            // "Gachibowli, Nanakramguda",
-            "City: Nanakramguda",
-            "State: TELANGANA",
-            "Country: INDIA",
-            "Pincode: 500032",
-            "Email: natrajan@gmail.com",
-            "Ph: 9999999999",
-          ],
-        },
-        shipping: {
-          name: "Natarajan Chandrasekaran",
-          address: [
-            "Survey 115/1, ISB Rd, Financial District",
-            "Gachibowli, Nanakramguda",
-            "City: Nanakramguda",
-            "State: TELANGANA",
-            "Country: INDIA",
-            "Pincode: 500032",
-            "Email: natrajan@gmail.com",
-            "Ph: 9999999999",
-          ],
-        },
+      "uid": "IN00000618",
+      "category": "Sale",
+      "type": "Sale",
+      "remark": "Invoice against Order #OR00000709",
+      "config": {
+        "storageLocationId": "64097cc4462d5422fccd8e84"
       },
-      items: [
-        { item: "Tata Nexon", hsn: "87038070", rate: "8,05,000.00", qty: 1, taxAmount: "1,44,900.00 (18%)", amount: "9,49,900.00", },
-        { item: "Car accessories Kit", hsn: "87089900", rate: "2,117.80", qty: 1, taxAmount: "381.20 (18%)", amount: "2,499.00" },
-      ],
-      bankDetails: {
-        bank: "YES BANK",
-        account: "66789999922445",
-        ifsc: "YESB0BNA567",
-        branch: "Kodihalli",
+      "subTotal": 100,
+      "discount": 64,
+      "couponDiscount": 0,
+      "discountedSubTotal": 100,
+      "taxTotal": 0,
+      "mrpTotal": 164,
+      "previousDue": 0,
+      "amount": 100,
+      "roundOff": 0,
+      "subTotalAmount": 100,
+      "shippingCharges": 30,
+      "shippingDiscount": 30,
+      "paymentStatus": "Unpaid",
+      "deliveryStatus": "ReturnProcessing",
+      "invoiceDate": "2023-06-23T00:00:00.000Z",
+      "dueDate": "2023-06-13T11:33:24.335Z",
+      "created": "2023-06-23T12:07:09.564Z",
+      "modified": "2023-06-23T12:52:07.296Z",
+
+      "Party": {
+        "uid": "LDU7WXCR",
+        "puid": "User",
+        "name": "Ashvini Shetkar",
+        "firstName": "Ashvini",
+        "lastName": "Shetkar",
+        "mobile": "+917517978898",
+        "email": "vilasshetkar@gmail.com",
+        "address": {
+          "line1": "Shop No. 8, Hari Om Plaza, Pune",
+          "line2": "Kalewadi-Pimpri Main Road, Nadhe Nagar, Kalewadi",
+          "line3": "Opp. Joytiba Temple",
+          "location": "Kalewadi ",
+          "area": "Pune City",
+          "city": "Pune",
+          "state": "MAHARASHTRA",
+          "country": "India",
+          "pincode": "411017",
+          "zoom": 14,
+          "accuracy": 17.778,
+          "latLng": {
+            "lat": 18.61799689999999,
+            "lng": 73.7917382
+          }
+        },
+        "bankDetails": {
+          "accountNumber": "123456",
+          "ifscCode": ""
+        },
+        "dob": "1990-02-02T00:00:00.000Z",
+        "gender": "male",
+        "joiningDate": "2023-03-14T00:00:00.000Z",
+        "maritalStatus": "Married",
+        "middleName": "ABCD",
+        "pan": "DDDFG8765F",
+        "userId": "63e243e0b8c48b22c885b4b9",
+        "profilePicture": "https://d2qp0siotla746.cloudfront.net/img/use-cases/profile-picture/template_0.jpg",
+        "InvoiceSalesSummary": {
+          "mrpTotal": 2845514,
+          "roundOff": 0.01999999999999999,
+          "discountedSubTotal": 1702586.98,
+          "invoices": 81,
+          "subTotal": 1634226.98,
+          "discount": 1142927.02,
+          "taxTotal": 0,
+          "previousDue": 0,
+          "amount": 1702747,
+          "subTotalAmount": 1702586.98
+        },
+        "TransactionSummary": {
+          "totalCreditAmount": 1781333,
+          "totalDebitAmount": 10720,
+          "transactions": 115,
+          "totalCredit": 115,
+          "totalDebit": 115
+        },
+        "ReferralSummary": {
+          "totalCount": 17,
+          "transactions": 5,
+          "totalCreditAmount": 173984,
+          "totalDebitAmount": 0,
+          "noTransactions": 12
+        }
       },
-      terms: [
-        "Terms: Goods once sold cannot be taken back or exchanged.",
+      "particulars": [
+        {
+          "_id": "6495957729bd8844641bf4bf",
+          "category": "Sale",
+          "type": "Sale",
+          "quantity": -1,
+          "sgst": 0,
+          "cgst": 0,
+          "inBoxQuantity": -12,
+          "boxQuantity": -1,
+          "mrp": 164,
+          "purchaseRate": 116.19,
+          "saleRate": 100,
+          "retailRate": 126.19,
+          "subTotal": 100,
+          "discount": 64,
+          "discountedSubTotal": 100,
+          "taxTotal": 0,
+          "amount": 100,
+          "mrpTotal": 164,
+          "stockDate": "2023-06-23T00:00:00.000Z",
+          "config": {},
+          "Product": {
+            "uid": "PR5045",
+            "name": "Gemini Sunflower Oil",
+            "shortName": "Gemini Sunflower Oil",
+            "type": "Product",
+            "tax": 0,
+            "isTaxIncluded": true,
+            "image": "/api/download/63e243e0b8c48b22c885b4b9/Cooking Oil/Gemini Sunflower Oil_1_liter.jpg",
+            "description": "<p>Gemini Sunflower Oil</p>",
+            "unit": "PCS",
+            "boxQuantity": 1,
+            "purchaseRate": 116.19,
+            "retailRate": 126.19,
+            "mrp": 164,
+            "retailMarginType": "Amount",
+            "retailMargin": 10,
+            "crate": false,
+            "showInStore": true,
+            "isStockRequired": true,
+            "category": "Grocery",
+            "additionalCategories": [],
+            "subCategory": "CookingOil",
+            "addToStock": false,
+            "startDate": "2023-05-19T00:00:00.000Z",
+            "expiryDate": "2023-05-19T00:00:00.000Z",
+            "created": "2023-05-19T08:28:46.455Z",
+            "modified": "2023-05-29T06:51:36.385Z",
+            "additionalFields": {},
+            "variantOptions": [],
+            "wholesaleMarginType": "Percentage",
+            "inBoxName": "Box",
+            "inBoxQuantity": 12,
+            "AvailableStock": {
+              "purchaseQuantity": 12,
+              "soldQuantity": -6,
+              "totalPrchaseAmount": 697.14,
+              "stockIn": 0,
+              "totalSaleAmount": 0,
+              "totalMrpAmount": 0,
+              "stockOut": 0,
+              "quantity": 6
+            },
+            "Discount": [],
+            "Variants": [],
+            "retailDiscount": 37.81,
+            "retailDiscountPercentage": 23.05,
+            "wholesaleDiscount": null,
+            "wholesaleDiscountPercentage": null
+          },
+          "StorageLocation": {
+            "category": "Godown",
+            "name": "kalewadi",
+            "address": "fwehfwe",
+            "building": "hari om plaza",
+            "wing": "A",
+            "floor": "5",
+            "chamber": "first",
+            "rack": "first",
+            "location": "kalewadi",
+            "width": 100,
+            "length": 100,
+            "height": 50
+          }
+        }
       ],
-      totalAmountInWords:
-        "INR Nine Lakh, Fifty-Two Thousand, Three Hundred And Ninety-Nine Rupees Only.",
+      "Company": {
+        "name": "Apnasite",
+        "bankDetails": {
+          "accountNumber": "1234567890",
+          "bankName": "HDFC",
+          "branch": "Pune",
+          "accountHolderName": "Apnasite",
+          "ifscCode": "HDFC0000234",
+          "vpa": "apnasite@ybl"
+        },
+        "contactDetails": {
+          "email": "kaapnasiteuser@gmail.com",
+          "mobile": "+917517978898",
+          "whatsappNumber": "+919049508514",
+          "phone": "",
+          "website": "http://apnasite.in",
+          "tollFreeNo": "",
+          "socialLinks": [
+            {
+              "name": "Facebook",
+              "label": "Facebook",
+              "url": "https://facebook.com/apnasite",
+              "className": "btn btn-link",
+              "icon": "bi bi-facebook",
+              "type": "Link"
+            }
+          ]
+        },
+        "gst": "",
+        "logo": "/api/download/localhost/default/apnasite-logo-light.png",
+        "address": {
+          "line1": "Hariom plaza",
+          "line2": "Kalewadi",
+          "location": "Pune H.O",
+          "area": "Pune City",
+          "city": "Pune",
+          "state": "MAHARASHTRA",
+          "country": "india",
+          "pincode": "411001"
+        },
+        "darkLogo": "/api/download/localhost/default/apnasite-logo-light.png"
+      },
+      "balance": null
     };
-
-    this.render();
-  }
-
-  static get observedAttributes() {
-    return ["config", "data"];
-  }
-
-  connectedCallback() {
-    this.addEventListener("submit", (event) => {
-      const { companyName, invoiceNumber } = event.detail;
-      console.log('event.detail:', event.detail);
-      this.data = { ...this.data, ...event.detail };
-      console.log('data:', this.data);
-      this.render();
-    });
-  }
-  attributeChangedCallback(name, oldValue, newValue) {
-    if (oldValue !== newValue) {
-      if (name === 'config' && newValue) {
-        try {
-          console.log('config new valuehhh:', newValue);
-          const newConfig = JSON.parse(newValue);
-          this.config = { ...this.config, ...newConfig };
-        } catch (e) {
-          console.error('Invalid config JSON:', e);
-        }
-      }
-      if (name === 'data' && newValue) {
-        try {
-          console.log('data new value:', newValue);
-          const newData = JSON.parse(newValue);
-          this.data = { ...this.data, ...newData };
-          console.log('data:', this.data);
-        } catch (e) {
-          console.error('Invalid data JSON:', e);
-        }
-      }
-      this.render();
-    }
-  }
-  createElement(tag, className, textContent) {
-    const element = document.createElement(tag);
-    if (className) element.className = className;
-    if (textContent) element.textContent = textContent;
-    return element;
-  }
-
-  createTableHeaderCell(text) {
-    const th = this.createElement("th", null, text);
-    return th;
-  }
-
-  createTableCell(text) {
-    const td = this.createElement("td", null, text);
-    return td;
   }
 
   render() {
-    // Clear previous content
-    if (this.shadowRoot) {
-      this.shadowRoot.innerHTML = '';
-    } else {
-      console.error('shadowRoot is undefined');
-    }
+    this.innerHTML = "";
 
     const wrapper = this.createElement("div", this.config.backgroundDiv);
+    wrapper.appendChild(this.renderBackground());
+    const content = this.createElement("div", this.config.contentClass);
 
-    const backgroundDiv = this.createElement("div", this.config.backgroundClass);
-    backgroundDiv.appendChild(this.createElement("div", this.config.rec1Class));
-    backgroundDiv.appendChild(this.createElement("div", this.config.rec2Class));
-    backgroundDiv.appendChild(this.createElement("div", this.config.rec3Class));
-    backgroundDiv.appendChild(this.createElement("div", this.config.rec4Class));
-    backgroundDiv.appendChild(this.createElement("div", this.config.rec5Class));
-    backgroundDiv.appendChild(this.createElement("div", this.config.rec6Class));
-    wrapper.appendChild(backgroundDiv);
+    content.appendChild(this.renderTitle());
+    content.appendChild(this.renderHeader());
+    content.appendChild(this.renderCustomerDetails());
+    content.appendChild(this.renderItemsTable());
+    content.appendChild(this.renderTotal());
+    content.appendChild(this.renderBankDetails());
+    content.appendChild(this.renderTerms());
+    content.appendChild(this.renderFooter());
 
-    const invoiceContent = this.createElement("div", this.config.contentClass);
-
-    // Invoice Title
-    const invoiceTitle = this.createElement("h1", this.config.titleClass, this.data.title);
-    invoiceContent.appendChild(invoiceTitle);
-
-    // Invoice Header
-    const invoiceHeader = this.createElement("div", this.config.headerClass);
-    const logo = this.createElement("img", this.config.logoClass);
-    logo.src = this.data.logo;
-    logo.alt = "Logo";
-    invoiceHeader.appendChild(logo);
-
-    const qr = this.createElement("img", this.config.qrClass);
-    qr.src = this.data.qr;
-    qr.alt = "qr";
-    invoiceHeader.appendChild(qr);
-
-    const detailsDiv = this.createElement("div", this.config.detailsClass);
-    detailsDiv.appendChild(this.createElement("div", "invoice-no", `Invoice #: ${this.data.invoiceNumber}`));
-    detailsDiv.appendChild(this.createElement("div", "invoice-date", `Invoice Date: ${this.data.invoiceDate}`));
-    detailsDiv.appendChild(this.createElement("div", "invoice-due-date", `Due Date: ${this.data.dueDate}`));
-    detailsDiv.appendChild(this.createElement("div", "invoice-po-number", `PO Number: ${this.data.poNumber}`));
-    invoiceHeader.appendChild(detailsDiv);
-
-    // Company Details
-    const companyDetailsDiv = this.createElement("div", "invoice-company-details");
-    companyDetailsDiv.appendChild(this.createElement("div", "org-name", this.data.companyName));
-    companyDetailsDiv.appendChild(this.createElement("div", "org-gst-no", this.data.gstNo));
-
-    const orgAddressDiv = this.createElement("div", this.config.addressClass);
-    this.data.companyAddress.forEach((line) => {
-      orgAddressDiv.appendChild(this.createElement("div", null, line));
-    });
-    companyDetailsDiv.appendChild(orgAddressDiv);
-    invoiceHeader.appendChild(companyDetailsDiv);
-    invoiceContent.appendChild(invoiceHeader);
-
-    // Customer Details
-    const customerDetailsSection = this.createElement("div", "customer-details-section");
-    const billingSection = this.createElement("div", "billing-address-section");
-    billingSection.appendChild(this.createElement("div", this.config.detailsHeaderClass, "Billing Address:"));
-    const billingAddressDiv = this.createElement("div", "details-cell party-billing-address");
-    billingAddressDiv.appendChild(this.createElement("div", "party-name", this.data.customer.billing.name));
-    this.data.customer.billing.address.forEach((line) => {
-      billingAddressDiv.appendChild(this.createElement("div", null, line));
-    });
-    billingSection.appendChild(billingAddressDiv);
-    customerDetailsSection.appendChild(billingSection);
-
-    const shippingSection = this.createElement("div", "shipping-address-section");
-    shippingSection.appendChild(this.createElement("div", this.config.detailsHeaderClass, "Shipping Address:"));
-    const shippingAddressDiv = this.createElement("div", "details-cell party-shipping-address");
-    shippingAddressDiv.appendChild(this.createElement("div", "party-name", this.data.customer.shipping.name));
-    this.data.customer.shipping.address.forEach((line) => {
-      shippingAddressDiv.appendChild(this.createElement("div", null, line));
-    });
-    shippingSection.appendChild(shippingAddressDiv);
-    customerDetailsSection.appendChild(shippingSection);
-
-    invoiceContent.appendChild(customerDetailsSection);
-
-    // Items Table Section
-    const items = this.createElement("div", "items");
-    const table = this.createElement("table", this.config.tableClass);
-
-    const thead = this.createElement("thead");
-    const headerRow = this.createElement("tr");
-
-    // Declare and collect all unique keys from the items array
-    const allKeys = new Set();
-    this.data.items.forEach((item) => {
-      Object.keys(item).forEach((key) => {
-        allKeys.add(key);
-      });
-    });
-
-    // Create table header
-    allKeys.forEach((key) => {
-      headerRow.appendChild(this.createTableHeaderCell(key.charAt(0).toUpperCase() + key.slice(1)));
-    });
-
-    thead.appendChild(headerRow);
-    table.appendChild(thead);
-
-    // Create table body
-    const tbody = this.createElement("tbody");
-    this.data.items.forEach((item) => {
-      const row = this.createElement("tr");
-
-      allKeys.forEach((key) => {
-        row.appendChild(this.createTableCell(item[key] || ""));
-      });
-
-      tbody.appendChild(row);
-    });
-
-    table.appendChild(tbody);
-    items.appendChild(table);
-    invoiceContent.appendChild(items);
-
-    // Total Amount
-    const totalDiv = this.createElement("div", this.config.totalClass);
-    totalDiv.appendChild(this.createElement("div", null, `Total Amount in Words: ${this.data.totalAmountInWords}`));
-    invoiceContent.appendChild(totalDiv);
-
-    // Bank Details
-    const bankDetailsDiv = this.createElement("div", this.config.bankDetailsClass);
-    bankDetailsDiv.appendChild(this.createElement("div", null, `Bank: ${this.data.bankDetails.bank}`));
-    bankDetailsDiv.appendChild(this.createElement("div", null, `Account: ${this.data.bankDetails.account}`));
-    bankDetailsDiv.appendChild(this.createElement("div", null, `IFSC: ${this.data.bankDetails.ifsc}`));
-    bankDetailsDiv.appendChild(this.createElement("div", null, `Branch: ${this.data.bankDetails.branch}`));
-    invoiceContent.appendChild(bankDetailsDiv);
-
-    // Terms
-    const termsDiv = this.createElement("div", this.config.termsClass);
-    termsDiv.appendChild(this.createElement("div", this.config.detailsHeaderClass,));
-    this.data.terms.forEach((term) => {
-      termsDiv.appendChild(this.createElement("div", null, term));
-    });
-    invoiceContent.appendChild(termsDiv);
-
-    // Footer
-    const footerDiv = this.createElement("div", this.config.footerClass);
-    footerDiv.appendChild(this.createElement("div", null, `Authorized Signature`));
-    footerDiv.appendChild(this.createElement("div", null, `Date: ${this.data.invoiceDate}`));
-    invoiceContent.appendChild(footerDiv);
-
-    wrapper.appendChild(invoiceContent);
-    this.shadowRoot.appendChild(wrapper);
-
+    wrapper.appendChild(content);
+    this.appendChild(wrapper);
     this.loadStyles();
   }
 
+  renderBackground() {
+    const bg = this.createElement("div", this.config.backgroundClass);
+    [this.config.rec1Class, this.config.rec2Class, this.config.rec3Class,
+    this.config.rec4Class, this.config.rec5Class, this.config.rec6Class]
+      .forEach(cls => bg.appendChild(this.createElement("div", cls)));
+    return bg;
+  }
+
+  renderTitle() {
+    return this.createElement("h1", this.config.titleClass, this.data.title || "Invoice");
+  }
+
+  renderHeader() {
+    const header = this.createElement("div", this.config.headerClass);
+    header.appendChild(this.renderLogo());
+    header.appendChild(this.renderQR());
+    header.appendChild(this.renderInvoiceDetails());
+    header.appendChild(this.renderCompanyDetails());
+    return header;
+  }
+
+  renderLogo() {
+    const logo = this.createElement("img", this.config.logoClass);
+    logo.src = this.data.logo || "";
+    logo.alt = "Logo";
+    return logo;
+  }
+
+  renderQR() {
+    const qr = this.createElement("img", this.config.qrClass);
+    qr.src = this.data.qr || "";
+    qr.alt = "QR";
+    return qr;
+  }
+
+  renderInvoiceDetails() {
+    const d = this.data;
+    const details = this.createElement("div", this.config.detailsClass);
+    details.appendChild(this.createElement("div", "invoice-no", `Invoice #: ${d.invoiceNumber || ""}`));
+    details.appendChild(this.createElement("div", "invoice-date", `Invoice Date: ${d.invoiceDate || ""}`));
+    details.appendChild(this.createElement("div", "invoice-due-date", `Due Date: ${d.dueDate || ""}`));
+    details.appendChild(this.createElement("div", "invoice-po-number", `PO Number: ${d.poNumber || ""}`));
+    return details;
+  }
+
+  renderCompanyDetails() {
+    const d = this.data;
+    const div = this.createElement("div", "invoice-company-details");
+    div.appendChild(this.createElement("div", "org-name", d.companyName || ""));
+    div.appendChild(this.createElement("div", "org-gst-no", d.gstNo || ""));
+    const addr = this.createElement("div", this.config.addressClass);
+    (d.companyAddress || []).forEach(line => addr.appendChild(this.createElement("div", null, line)));
+    div.appendChild(addr);
+    return div;
+  }
+
+  renderCustomerDetails() {
+    const d = this.data;
+    const section = this.createElement("div", "customer-details-section");
+    section.appendChild(this.renderAddressSection("Billing Address:", d.customer?.billing));
+    section.appendChild(this.renderAddressSection("Shipping Address:", d.customer?.shipping));
+    return section;
+  }
+
+  renderAddressSection(title, party) {
+    const section = this.createElement("div", title.toLowerCase().replace(/\s/g, "-") + "-section");
+    section.appendChild(this.createElement("div", this.config.detailsHeaderClass, title));
+    const addrDiv = this.createElement("div", "details-cell party-address");
+    addrDiv.appendChild(this.createElement("div", "party-name", party?.name || ""));
+    (party?.address || []).forEach(line => addrDiv.appendChild(this.createElement("div", null, line)));
+    section.appendChild(addrDiv);
+    return section;
+  }
+
+  renderItemsTable() {
+    const itemsDiv = this.createElement("div", "items");
+    const table = this.createElement("table", this.config.tableClass);
+    const items = this.data.particulars || [];
+    if (!items.length) {
+      table.appendChild(this.createElement("caption", null, "No items"));
+      itemsDiv.appendChild(table);
+      return itemsDiv;
+    }
+    const allKeys = Array.from(new Set(items.flatMap(item => Object.keys(item))));
+    const thead = this.createElement("thead");
+    const headerRow = this.createElement("tr");
+    allKeys.forEach(key => headerRow.appendChild(this.createTableHeaderCell(key)));
+    thead.appendChild(headerRow);
+    table.appendChild(thead);
+
+    const tbody = this.createElement("tbody");
+    items.forEach(item => {
+      const row = this.createElement("tr");
+      allKeys.forEach(key => row.appendChild(this.createTableCell(item[key])));
+      tbody.appendChild(row);
+    });
+    table.appendChild(tbody);
+    itemsDiv.appendChild(table);
+    return itemsDiv;
+  }
+
+  renderTotal() {
+    return this.createElement("div", this.config.totalClass, `Total Amount in Words: ${this.data.totalAmountInWords || ""}`);
+  }
+
+  renderBankDetails() {
+    const d = this.data.bankDetails || {};
+    const div = this.createElement("div", this.config.bankDetailsClass);
+    div.appendChild(this.createElement("div", null, `Bank: ${d.bank || ""}`));
+    div.appendChild(this.createElement("div", null, `Account: ${d.account || ""}`));
+    div.appendChild(this.createElement("div", null, `IFSC: ${d.ifsc || ""}`));
+    div.appendChild(this.createElement("div", null, `Branch: ${d.branch || ""}`));
+    return div;
+  }
+
+  renderTerms() {
+    const div = this.createElement("div", this.config.termsClass);
+    div.appendChild(this.createElement("div", this.config.detailsHeaderClass, "Terms:"));
+    (this.data.terms || []).forEach(term => div.appendChild(this.createElement("div", null, term)));
+    return div;
+  }
+
+  renderFooter() {
+    const div = this.createElement("div", this.config.footerClass);
+    div.appendChild(this.createElement("div", null, "Authorized Signature"));
+    div.appendChild(this.createElement("div", null, `Date: ${this.data.invoiceDate || ""}`));
+    return div;
+  }
+
+  createElement(tag, className, textContent) {
+    const el = document.createElement(tag);
+    if (className) el.className = className;
+    if (textContent !== undefined) el.textContent = textContent;
+    return el;
+  }
+
+  createTableHeaderCell(text) {
+    return this.createElement("th", null, text.charAt(0).toUpperCase() + text.slice(1));
+  }
+
+  createTableCell(text) {
+    return this.createElement("td", null, text == null ? "" : String(text));
+  }
 
   loadStyles() {
     const styleSheet = document.createElement("link");
     styleSheet.rel = "stylesheet";
-    styleSheet.href = `http://127.0.0.1:8081/css/style.css`; // Make sure this path is correct based on your project structure
-    this.shadowRoot.appendChild(styleSheet);
+    styleSheet.href = `./css/style.css`;
+    this.appendChild(styleSheet);
   }
 }
 
 class InvoiceFormComponent extends HTMLElement {
+  static get observedAttributes() {
+    return ["config", "data"];
+  }
+
   constructor() {
     super();
+    this.config = this.defaultConfig();
+    this.data = this.defaultData();
+    this.render();
+  }
 
-    // Attach shadow DOM
-    const shadow = this.attachShadow({ mode: 'open' });
+  attributeChangedCallback(name, oldValue, newValue) {
+    if (oldValue !== newValue) {
+      try {
+        if (name === "config" && newValue) {
+          Object.assign(this.config, JSON.parse(newValue));
+        }
+        if (name === "data" && newValue) {
+          Object.assign(this.data, JSON.parse(newValue));
+        }
+      } catch (e) {
+        console.error(`Invalid ${name} JSON:`, e);
+      }
+      this.render();
+    }
+  }
 
-    // External CSS (optional, for styling)
-    const style = document.createElement('style');
-    style.textContent = `
-          form {
-              display: flex;
-              flex-direction: column;
-              gap: 1rem;
-              width: 300px;
-          }
-          label {
-              font-weight: bold;
-          }
-          input {
-              padding: 0.5rem;
-              border: 1px solid #ccc;
-              border-radius: 4px;
-          }
-          button {
-              padding: 0.5rem;
-              border: none;
-              background-color: #007bff;
-              color: white;
-              border-radius: 4px;
-              cursor: pointer;
-          }
-          button:hover {
-              background-color: #0056b3;
-          }
-      `;
-    shadow.appendChild(style);
+  defaultConfig() {
+    return {
+      formClass: "invoice-form container",
+      formLabelClass: "form-label",
+      formControlClass: "form-control",
+      formRowClass: "form-row",
+      formButtonClass: "btn btn-primary",
+      particularsTableClass: "particulars-table table table-striped table-sm table-bordered",
+      particularsAddBtnClass: "btn btn-secondary btn-sm",
+      particularsRemoveBtnClass: "btn btn-danger btn-sm"
+    };
+  }
 
-    // Form container
-    const form = document.createElement('form');
+  defaultData() {
+    return {
+      fields: [
+        { label: "Date:", type: "date", name: "invoiceDate", row: 1 },
+        { label: "Vno:", type: "text", name: "vno", row: 1 },
+        { label: "Invoice No:", type: "text", name: "config.invoice_no", row: 1, disabled: true },
+        { label: "Company:", type: "text", name: "company", className: "formly-company", autoComplete: true },
+        { label: "Godown:", type: "text", name: "config.storageLocationId", row: 2 },
+        { label: "Supplier:", type: "text", name: "supplier", row: 3 },
+        { label: "Narr:", type: "text", name: "narr", row: 3 },
+        { label: "CST/IGST:", type: "select", name: "cst_igst", row: 4, options: [{ label: "CST", value: "CST" }, { label: "IGST", value: "IGST" }] },
+        { label: "For LBT:", type: "select", name: "forlbt", row: 4, options: [{ label: "Yes", value: "yes" }, { label: "No", value: "no" }] },
+        { label: "PO No:", type: "text", name: "po_no", row: 4, required: true },
+        {
+          label: "Particulars:",
+          type: "array",
+          name: "particulars",
+          row: 2,
+          fields: [
+            { label: "Name", type: "text", name: "name" },
+            { label: "Quantity", type: "number", name: "quantity" },
+            { label: "SGST", type: "number", name: "sgst" },
+            { label: "CGST", type: "number", name: "cgst" },
+            { label: "MRP", type: "number", name: "mrp" },
+            { label: "Purchase Rate", type: "number", name: "purchaseRate" },
+            { label: "Sale Rate", type: "number", name: "saleRate" },
+            { label: "Discount", type: "number", name: "discount" },
+            { label: "Discounted Sub Total", type: "number", name: "discountedSubTotal" },
+            { label: "Tax Total", type: "number", name: "taxTotal" }
+          ]
+        }
+      ],
+      particulars: [
+        {
+          name: "",
+          quantity: "",
+          sgst: "",
+          cgst: "",
+          mrp: "",
+          saleRate: "",
+          discount: "",
+        }
+      ]
+    };
+  }
 
-    // Product Name field
-    // const companyNameLabel = document.createElement('label');
-    // companyNameLabel.textContent = 'Company Name:';
-    // const companyNameInput = document.createElement('input');
-    // companyNameInput.type = 'text';
-    // companyNameInput.name = 'companyName';
-    // companyNameInput.required = true;
+  render() {
+    this.innerHTML = "";
+    const form = this.createElement("form", this.config.formClass);
 
-    // Rate field
-    // const rateLabel = document.createElement('label');
-    // rateLabel.textContent = 'Rate:';
-    // const rateInput = document.createElement('input');
-    // rateInput.type = 'number';
-    // rateInput.name = 'rate';
-    // rateInput.required = true;
+    this.data.fields.forEach(field => {
+      if (field.type === "array") {
+        form.appendChild(this.renderArrayField(field));
+      } else {
+        const row = this.createElement("div", this.config.formRowClass);
+        row.appendChild(this.createLabel(field));
+        row.appendChild(this.createInput(field));
+        form.appendChild(row);
+      }
+    });
 
-    // Date Field
-    const invoiceDateLabel = document.createElement('label');
-    invoiceDateLabel.textContent = 'Date:';
-    const invoiceDate = document.createElement('input');
-    invoiceDate.type = 'date';
-    invoiceDate.name = 'invoiceDate';
-    form.appendChild(invoiceDateLabel);
-    form.appendChild(invoiceDate);
-
-    // Vno Field
-    const vnoLabel = document.createElement('label');
-    vnoLabel.textContent = 'Vno:';
-    const vnoInput = document.createElement('input');
-    vnoInput.type = 'text';
-    vnoInput.name = 'vno';
-    form.appendChild(vnoLabel);
-    form.appendChild(vnoInput);
-
-    // Invoice No Field
-    const invoiceNoLabel = document.createElement('label');
-    invoiceNoLabel.textContent = 'Invoice No:';
-    const invoiceNoInput = document.createElement('input');
-    invoiceNoInput.type = 'text';
-    invoiceNoInput.name = 'config.invoice_no';
-    form.appendChild(invoiceNoLabel);
-    form.appendChild(invoiceNoInput);
-
-    // Company Field
-    const companyLabel = document.createElement('label');
-    companyLabel.textContent = 'Company:';
-    const companyInput = document.createElement('input');
-    companyInput.type = 'text';
-    companyInput.name = 'company';
-    form.appendChild(companyLabel);
-    form.appendChild(companyInput);
-
-    // Godown Field
-    const godownLabel = document.createElement('label');
-    godownLabel.textContent = 'Godown:';
-    const godownInput = document.createElement('input');
-    godownInput.type = 'text';
-    godownInput.name = 'config.storageLocationId';
-    form.appendChild(godownLabel);
-    form.appendChild(godownInput);
-
-    // Supplier Field
-    const supplierLabel = document.createElement('label');
-    supplierLabel.textContent = 'Supplier:';
-    const supplierInput = document.createElement('input');
-    supplierInput.type = 'text';
-    supplierInput.name = 'supplier';
-    form.appendChild(supplierLabel);
-    form.appendChild(supplierInput);
-
-
-    // CST/IGST Field
-    const cstIgstLabel = document.createElement('label');
-    cstIgstLabel.textContent = 'CST/IGST:';
-    const cstIgstInput = document.createElement('input');
-    cstIgstInput.type = 'text';
-    cstIgstInput.name = 'cst_igst';
-    form.appendChild(cstIgstLabel);
-    form.appendChild(cstIgstInput);
-
-    // Forlbt Field
-    const forlbtLabel = document.createElement('label');
-    forlbtLabel.textContent = 'Forlbt:';
-    const forlbtInput = document.createElement('input');
-    forlbtInput.type = 'text';
-    forlbtInput.name = 'forlbt';
-    form.appendChild(forlbtLabel);
-    form.appendChild(forlbtInput);
-
-    // PO No Field
-    const poNoLabel = document.createElement('label');
-    poNoLabel.textContent = 'PO No:';
-    const poNoInput = document.createElement('input');
-    poNoInput.type = 'text';
-    poNoInput.name = 'po_no';
-    form.appendChild(poNoLabel);
-    form.appendChild(poNoInput);
-
-    // Submit button
-    const submitButton = document.createElement('button');
-    submitButton.type = 'submit';
-    submitButton.textContent = 'Add Product';
-
-    // Append fields to form
-    // form.appendChild(companyNameLabel);
-    // form.appendChild(companyNameInput);
-    //form.appendChild(rateLabel);
-    //form.appendChild(rateInput);
+    const submitButton = this.createElement("button", this.config.formButtonClass, "Add Product");
+    submitButton.type = "submit";
     form.appendChild(submitButton);
 
-    // Append form to shadow DOM
-    shadow.appendChild(form);
-
-    // Handle form submission
-    form.addEventListener('submit', (event) => {
+    form.addEventListener("submit", (event) => {
       event.preventDefault();
-      //const companyName = companyNameInput.value;
-      //const rate = parseFloat(rateInput.value);
-
-      // Trigger a custom event with form data
+      // Gather main fields
+      const mainData = Object.fromEntries(new FormData(form));
+      // Gather particulars (array fields)
+      const particularsField = this.data.fields.find(f => f.type === "array" && f.name === "particulars");
+      let particulars = [];
+      if (particularsField) {
+        const rows = form.querySelectorAll(".particulars-array-row");
+        rows.forEach(row => {
+          const obj = {};
+          particularsField.fields.forEach(f => {
+            const input = row.querySelector(`[name="${f.name}"]`);
+            obj[f.name] = input ? input.value : "";
+          });
+          particulars.push(obj);
+        });
+      }
       this.dispatchEvent(
-        new CustomEvent('submit', {
-          detail: { ...Object.fromEntries(new FormData(form)), },
+        new CustomEvent("submit", {
+          detail: { ...mainData, particulars },
           bubbles: true,
           composed: true,
         })
       );
-
-      // Reset form
-      //form.reset();
     });
+
+    this.appendChild(form);
+  }
+
+  renderArrayField(field) {
+    const wrapper = this.createElement("div", this.config.formRowClass);
+    wrapper.appendChild(this.createLabel(field));
+    const table = this.createElement("table", this.config.particularsTableClass);
+    const thead = this.createElement("thead");
+    const headerRow = this.createElement("tr");
+    field.fields.forEach(f => headerRow.appendChild(this.createElement("th", null, f.label)));
+    headerRow.appendChild(this.createElement("th", null, "")); // For remove button
+    thead.appendChild(headerRow);
+    table.appendChild(thead);
+
+    const tbody = this.createElement("tbody");
+    (this.data.particulars || []).forEach((particular, idx) => {
+      tbody.appendChild(this.renderArrayRow(field, particular, idx));
+    });
+    table.appendChild(tbody);
+
+    // Add button
+    const addBtn = this.createElement("button", this.config.particularsAddBtnClass, "+ Add Row");
+    addBtn.type = "button";
+    addBtn.addEventListener("click", () => {
+      this.data.particulars.push({});
+      this.render();
+    });
+
+    wrapper.appendChild(table);
+    wrapper.appendChild(addBtn);
+    return wrapper;
+  }
+
+  renderArrayRow(field, particular, idx) {
+    const tr = this.createElement("tr", "particulars-array-row");
+    field.fields.forEach(f => {
+      const td = this.createElement("td");
+      const input = this.createElement("input", this.config.formControlClass);
+      input.type = f.type || "text";
+      input.name = f.name;
+      input.value = particular[f.name] || "";
+      td.appendChild(input);
+      tr.appendChild(td);
+    });
+    // Remove button
+    const tdRemove = this.createElement("td");
+    const removeBtn = this.createElement("button", this.config.particularsRemoveBtnClass, "Remove");
+    removeBtn.type = "button";
+    removeBtn.addEventListener("click", () => {
+      this.data.particulars.splice(idx, 1);
+      this.render();
+    });
+    tdRemove.appendChild(removeBtn);
+    tr.appendChild(tdRemove);
+    return tr;
+  }
+
+  createLabel(field) {
+    const label = this.createElement("label", this.config.formLabelClass, field.label);
+    if (field.name) label.htmlFor = field.name;
+    return label;
+  }
+
+  createInput(field) {
+    let input;
+    if (field.type === "select") {
+      input = this.createElement("select", this.config.formControlClass);
+      input.name = field.name;
+      (field.options || []).forEach(opt => {
+        const option = document.createElement("option");
+        option.value = opt.value;
+        option.textContent = opt.label;
+        input.appendChild(option);
+      });
+    } else {
+      input = this.createElement("input", this.config.formControlClass);
+      input.type = field.type || "text";
+      input.name = field.name;
+      if (field.disabled) input.disabled = true;
+      if (field.required) input.required = true;
+      if (field.autoComplete) input.autocomplete = "on";
+      if (field.className) input.classList.add(field.className);
+    }
+    return input;
+  }
+
+  createElement(tag, className, textContent) {
+    const el = document.createElement(tag);
+    if (className) el.className = className;
+    if (textContent !== undefined) el.textContent = textContent;
+    return el;
   }
 }
 

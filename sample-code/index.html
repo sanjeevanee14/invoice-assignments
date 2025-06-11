@@ -10,18 +10,46 @@
 </head>
 
 <body>
+  <div class="container">
+    <div class="row">
+      <div class="col-7 overflow-auto">
+        <invoice-component>
+        </invoice-component>
+      </div>
+      <div class="col-5">
+        <invoice-form-component data='{
+  "fields": [
+    {"label": "Date:", "type": "date", "name": "invoiceDate", "row": 1},
+    {"label": "Vno:", "type": "text", "name": "vno", "row": 1},
+    {"label": "Invoice No:", "type": "text", "name": "uid", "row": 1, "disabled": true},
+    {
+      "label": "Company:",
+      "type": "text",
+      "name": "company",
+      "className": "formly-company",
+      "autoComplete": true
+    },
 
-  <div class="row">
-    <div class="col-6">
-      <invoice-component>
-      </invoice-component>
-    </div>
-    <div class="col-6">
-      <invoice-form-component>
-      </invoice-form-component>
+    {"label": "Particulars:", "type": "array", "name": "particulars", "row": 2,
+      "fields": [
+        {"label": "Name", "type": "text", "name": "name"},
+        {"label": "Quantity", "type": "number", "name": "quantity"},
+        {"label": "GST", "type": "number", "name": "gst"},
+        {"label": "MRP", "type": "number", "name": "mrp"},
+        {"label": "Sale Rate", "type": "number", "name": "saleRate"},
+        {"label": "Discount", "type": "number", "name": "discount"}
+      ]
+},
+    {"label": "Godown:", "type": "text", "name": "config.storageLocationId", "row": 2},
+    {"label": "Party:", "type": "text", "name": "Party.name", "row": 3},
+    {"label": "Narration:", "type": "text", "name": "remark", "row": 3},
+    {"label": "PO No:", "type": "text", "name": "purchaseOrderNo", "row": 4, "required": true}
+  ]
+}'>
+        </invoice-form-component>
+      </div>
     </div>
   </div>
-
 
   <script src="script.js"></script>
   <script>
