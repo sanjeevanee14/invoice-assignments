@@ -437,7 +437,7 @@ class InvoiceComponent extends HTMLElement {
   }
 
   renderBankDetails() {
-    const d = this.data.bankDetails || {};
+    const d = this.Party.bankDetails || {};
     const div = this.createElement("div", this.config.bankDetailsClass);
     div.appendChild(this.createElement("div", null, `Bank: "YES BANK" ${d.bank || ""}`));
     div.appendChild(this.createElement("div", null, `Account: "66789999922445" ${d.account || ""}`));
