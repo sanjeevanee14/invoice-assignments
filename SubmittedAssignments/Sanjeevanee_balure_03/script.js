@@ -457,7 +457,7 @@ class InvoiceComponent extends HTMLElement {
   renderTerms() {
     const div = this.createElement("div", this.config.termsClass);
     div.appendChild(this.createElement("div", null, "$ 1000"));
-    div.appendChild(this.createElement("div", "Goods once sold cannot be taken back or exchanged."));
+    div.appendChild(this.createElement("div", null, "Goods once sold cannot be taken back or exchanged."));
     return div;
   }
 
