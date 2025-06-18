@@ -472,7 +472,7 @@ button:hover {
     font-size: 29px;
 }
 
-tr 3 {
+tr:nth-child(3) {
 	background-color: whitesmoke;
 }
 .details-header {
