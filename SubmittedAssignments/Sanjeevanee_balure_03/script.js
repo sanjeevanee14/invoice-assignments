@@ -432,7 +432,7 @@ class InvoiceComponent extends HTMLElement {
   
    
   renderTotal() {
-    return this.createElement("div", this.config.totalClass, `Total ${this.data.total || ""}`);
+    return this.createElement("div", this.config.totalClass, `Total ${this.data.amount ?? ""}`);
 	
   }
 
