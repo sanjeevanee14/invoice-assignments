@@ -11,7 +11,7 @@ class InvoiceComponent extends HTMLElement {
   }
 
   connectedCallback() {
-    this.addEventListener("submit", (event) => {
+    this.addEventListener("document", (event) => {
       Object.assign(this.data, event.detail);
       this.render();
     });
